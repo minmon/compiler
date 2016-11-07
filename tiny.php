@@ -12,16 +12,73 @@ class AnalyserEnum
 	const SYNTAX = "syntax";
 }
 
+class LexicalAnalyser
+{
+	static $symbol_table = [];
+	
+	static function analyse($source)
+	{
+		$tokens = self::clear_source($source);
+
+		self::token_recognizer($tokens);
+	}
+	
+	private function clear_source($source)
+	{
+		return str_replace("\s","",$source);
+	}
+
+	private function token_recognizer($tokens)
+	{
+		$expression = self::regular_expression();
+		
+		for($i=0;$i<sizeof($expression);$i++)
+		{
+			if(preg_match("/${expression[$i]}/",$tokens,$token))
+			{
+				for($j=0;$j<sizeof($token);$j++)
+				{
+					self::$symbol_table[] = $token[$j];
+				}
+			}
+		}
+		
+		print_r(self::$symbol_table);
+	}
+	
+	private function regular_expression()
+	{
+		return [
+			"^function",
+			"[^(?:\bfunction\b)]\w+",
+			"\(",
+			"\)",
+			"\{",
+			"\}",
+		];
+	}		
+}
+
+class SyntaxAnalyser
+{
+	static function analyse($source)
+	{
+		
+	}
+}
+
 abstract class Analyser implements Cores
 {
 	static function lexical($source)
 	{
-		echo $source;
+		LexicalAnalyser::analyse($source);
 	}
+	
 	static function syntax($source)
 	{
 
 	}
+	
 	abstract function with($analyser);
 }
 
@@ -39,6 +96,7 @@ class Compiler extends Analyser
 
 		return new self();
 	}
+	
 	function with($analyser):Compiler
 	{
 		switch($analyser)
