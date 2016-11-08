@@ -126,8 +126,6 @@ class LexicalAnalyser
 				$init = self::next_tokens($init,$token);
 				
 				return self::tokenizer($init);
-			}else{
-				
 			}
 		}
 		
