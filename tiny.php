@@ -176,7 +176,7 @@ class LexicalAnalyser
 				default:
 					try
 					{
-						self::isLetter($tokens[$i]);
+						self::is_letter($tokens[$i]);
 						self::IDENTIFIER($tokens[$i]);
 					}catch(InvalidTokenHandler $error)
 					{
@@ -202,7 +202,7 @@ class LexicalAnalyser
 		echo "IDENTIFIER(value=>${token})\n";	
 	}
 	
-	private function isLetter($token)
+	private function is_letter($token)
 	{
 		if(ctype_alpha($token) || $token==null)
 		{
